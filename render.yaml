@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: finance-tracker
+    env: python
+    buildCommand: ""
+    startCommand: python app.py
+    envVars:
+      - key: SECRET_KEY
+        value: your-secret-key-here

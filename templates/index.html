@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Business Finance Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function toggleNameField() {
+            const type = document.getElementById("type".value;
+            const nameLabel = document.getElementById("nameLabel");
+            const nameInput = document.getElementById("nameInput");
+
+            if (type === "credit") {
+                nameLabel.textContent = "Customer";
+                nameInput.placeholder = "Enter customer name";
+            } else {
+                nameLabel.textContent = "Supplier";
+                nameInput.placeholder = "Enter supplier name";
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-light">
+<div class="container py-5">
+
+    <h1 class="text-center mb-4">📊 Finance Tracker</h1>
+
+    <!-- Add Transaction Form -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">Add Transaction</div>
+        <div class="card-body">
+            <form method="POST" action="/">
+                <div class="row g-3">
+                    <div class="col-md-2">
+                        <label>Transaction Type</label>
+                        <select name="type" class="form-select" id="type" onchange="toggleNameField()" required>
+                            <option value="credit">Credit (Receivable)</option>
+                            <option value="debit">Debit (Payable)</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Company Name</label>
+                        <input type="text" name="name" class="form-control" id="nameInput" placeholder="Enter company name" required>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Amount</label>
+                        <input type="number" step="0.01" name="amount" class="form-control" placeholder="Amount" required>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Transaction Date</label>
+                        <input type="date" name="transaction_date" class="form-control" placeholder="Transaction date">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Transaction Number</label>
+                        <input type="text" name="transaction_number" class="form-control" placeholder="Transaction number">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Due Date</label>
+                        <input type="date" name="due_date" class="form-control" required>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-success w-100">Add</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Credit Section -->
+    <h3 class="text-success">Account Receivable (Credit)</h3>
+    <table class="table table-bordered table-striped">
+
+        <thead>
+        <tr>
+            <th>Transaction #</th>
+            <th>Transaction Date</th>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for t in credit %}
+        <tr>
+            <td>{{ t.transaction_number }}</td>
+            <td>{{ t.transaction_date }}</td>
+            <td>{{ t.name }}</td>
+            <td>Rp{{ "{:,.2f}".format(t.amount) }}</td>
+            <td>{{ t.due_date }}</td>
+            <td>{{ '✅ Paid' if t.paid else '❌ Unpaid' }}</td>
+            <td>
+                {% if not t.paid %}
+                    <a href="/mark_paid/{{ t.id }}" class="btn btn-sm btn-outline-dark">Mark as Paid</a>
+                {% endif %}
+                <a href="/mark_error/{{ t.id }}" class="btn btn-sm btn-outline-warning"
+                onclick="return confirm('Mark this transaction as error?')">Mark as Error</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="7" class="text-center">No credit transactions yet.</td></tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+    <!-- Debit Section -->
+    <h3 class="text-danger mt-4">Account Payable (Debit)</h3>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Transaction #</th>
+            <th>Transaction Date</th>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for t in debit %}
+            <tr>
+                <td>{{ t.transaction_number }}</td>
+                <td>{{ t.transaction_date }}</td>
+                <td>{{ t.name }}</td>
+                <td>Rp{{ "{:,.2f}".format(t.amount) }}</td>
+                <td>{{ t.due_date }}</td>
+                <td>{{ '✅ Paid' if t.paid else '❌ Unpaid' }}</td>
+                <td>
+                    {% if not t.paid %}
+                        <a href="/mark_paid/{{ t.id }}" class="btn btn-sm btn-outline-dark">Mark as Paid</a>
+                    {% endif %}
+                    <a href="/mark_error/{{ t.id }}" class="btn btn-sm btn-outline-warning"
+                        onclick="return confirm('Mark this transaction as error?')">Mark as Error</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="7" class="text-center">No debit transactions yet.</td></tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+</html>

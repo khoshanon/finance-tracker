@@ -1,0 +1,66 @@
+/* General styling */
+body {
+    background-color: #f9f9f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #222;
+}
+
+/* Header */
+h1, h3 {
+    font-weight: 600;
+    color: #000000; /* black */
+}
+
+/* Card styling */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Card header color */
+.card-header {
+    background-color: #000000 !important;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* Buttons */
+.btn-success {
+    background-color: #000000;
+    border-color: #000000;
+}
+
+.btn-success:hover {
+    background-color: #333333;
+    border-color: #333333;
+}
+
+.btn-outline-primary {
+    color: #000000;
+    border-color: #000000;
+}
+
+.btn-outline-primary:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* Table styling */
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.table th {
+    background-color: #f3f3f3;
+}
+
+/* Form spacing */
+.form-label {
+    font-weight: 500;
+}
+
+/* Custom placeholder */
+::placeholder {
+    color: #aaa;
+}
